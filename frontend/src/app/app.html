@@ -1,0 +1,374 @@
+<div class="app-container">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <img 
+        src="/Logo-horizontal.png" 
+        alt="Drim Duit" 
+        class="logo" 
+      />
+      <div class="header-title">
+        <h1>Causación de facturas</h1>
+        <span>Gestión y distribución contable</span>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- CONTENIDO -->
+  <main class="main-content">
+
+    <!-- ESTADO DE CARGA -->
+    @if (!factura && !error) {
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Cargando factura...</p>
+      </div>
+    }
+
+
+    <!-- ERROR -->
+    @if (error) {
+      <div class="error-card">
+        <div class="error-icon">!</div>
+
+        <div>
+          <h3>No fue posible cargar la factura</h3>
+          <p>{{ error }}</p>
+        </div>
+      </div>
+    }
+
+
+    <!-- FACTURA -->
+    @if (factura) {
+
+      <!-- ENCABEZADO DE FACTURA -->
+      <section class="invoice-header">
+
+        <div class="invoice-title">
+          <div>
+            <span class="section-label">FACTURA</span>
+            <h2>{{ factura.factura.numero_factura }}</h2>
+          </div>
+
+          <span class="status">
+            {{ factura.factura.estado }}
+          </span>
+        </div>
+
+
+        <div class="invoice-info">
+
+          <div class="info-item">
+            <span class="label">Fecha de emisión</span>
+            <strong>
+              {{ factura.factura.fecha_emision | date:'dd/MM/yyyy' }}
+            </strong>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Subtotal</span>
+            <strong>
+              ${{ factura.factura.subtotal | number:'1.2-2' }}
+            </strong>
+          </div>
+
+          <div class="info-item">
+            <span class="label">IVA</span>
+            <strong>
+              ${{ factura.factura.total_iva | number:'1.2-2' }}
+            </strong>
+          </div>
+
+          <div class="info-item total">
+            <span class="label">Total factura</span>
+            <strong>
+              ${{ factura.factura.total | number:'1.2-2' }}
+            </strong>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- RESUMEN DE DISTRIBUCIÓN -->
+      <section class="distribution-summary">
+
+        <div class="summary-title">
+          <div>
+            <span class="section-label">DISTRIBUCIÓN</span>
+            <h2>Estado de la causación</h2>
+          </div>
+        </div>
+
+        <div class="summary-grid">
+
+          <div class="summary-card">
+            <span>Total factura</span>
+            <strong>
+              ${{ factura.distribucion.total_factura | number:'1.2-2' }}
+            </strong>
+          </div>
+
+          <div class="summary-card">
+            <span>Total distribuido</span>
+            <strong>
+              ${{ factura.distribucion.total_distribuido | number:'1.2-2' }}
+            </strong>
+          </div>
+
+          <div
+            class="summary-card"
+            [class.pending]="factura.distribucion.pendiente > 0"
+            [class.complete]="factura.distribucion.pendiente === 0"
+          >
+            <span>Pendiente</span>
+
+            <strong>
+              ${{ factura.distribucion.pendiente | number:'1.2-2' }}
+            </strong>
+
+            @if (factura.distribucion.pendiente === 0) {
+              <small>✓ Distribución completa</small>
+            }
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ITEMS -->
+      <section class="items-section">
+
+        <div class="section-header">
+          <div>
+            <span class="section-label">DETALLE</span>
+            <h2>Productos y servicios</h2>
+          </div>
+
+          <span class="item-count">
+            {{ factura.items.length }} items
+          </span>
+        </div>
+
+
+        <div class="table-container">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Valor unitario</th>
+                <th>Subtotal</th>
+                <th>IVA</th>
+                <th>Total</th>
+                <th>Cuenta contable</th>
+              </tr>
+            </thead>
+
+
+            <tbody>
+
+              @for (item of factura.items; track item.id) {
+
+                <tr>
+
+                  <td class="number">
+                    {{ item.numero_item }}
+                  </td>
+
+                  <td class="description">
+                    {{ item.descripcion }}
+                  </td>
+
+                  <td>
+                    {{ item.cantidad }}
+                  </td>
+
+                  <td>
+                    ${{ item.valor_unitario | number:'1.2-2' }}
+                  </td>
+
+                  <td>
+                    ${{ item.subtotal | number:'1.2-2' }}
+                  </td>
+
+                  <td>
+                    ${{ item.impuesto | number:'1.2-2' }}
+                  </td>
+
+                  <td class="total-cell">
+                    ${{ item.total | number:'1.2-2' }}
+                  </td>
+
+                  <td>
+
+                    @if (item.cuenta_contable_id) {
+
+                      <div class="account">
+
+                        <strong>
+                          {{ item.cuenta_codigo }}
+                        </strong>
+
+                        <span>
+                          {{ item.cuenta_nombre }}
+                        </span>
+
+                      </div>
+
+                    } @else {
+
+                      <span class="not-assigned">
+                        Sin asignar
+                      </span>
+
+                    }
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+      <!-- CENTROS DE COSTO -->
+      <section class="cost-centers-section">
+
+        <div class="section-header">
+
+          <div>
+            <span class="section-label">DISTRIBUCIÓN</span>
+            <h2>Centros de costo</h2>
+          </div>
+
+          <span class="item-count">
+            {{ factura.centros.length }} distribuciones
+          </span>
+
+        </div>
+
+
+        @if (factura.centros.length > 0) {
+
+          <div class="cost-center-list">
+
+            @for (centro of factura.centros; track centro.id) {
+
+              <div class="cost-center-card">
+
+                <div class="cost-center-item">
+
+                  <span class="label">
+                    Item
+                  </span>
+
+                  <strong>
+                    #{{ centro.factura_item_id }}
+                  </strong>
+
+                </div>
+
+
+                <div class="cost-center-item">
+
+                  <span class="label">
+                    Centro de costo
+                  </span>
+
+                  <strong>
+                    {{ centro.centro_codigo }}
+                  </strong>
+
+                  <span>
+                    {{ centro.centro_nombre }}
+                  </span>
+
+                </div>
+
+
+                <div class="cost-center-value">
+
+                  <span class="label">
+                    Valor distribuido
+                  </span>
+
+                  <strong>
+                    ${{ centro.valor | number:'1.2-2' }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        } @else {
+
+          <div class="empty-state">
+            <p>No hay centros de costo asignados.</p>
+          </div>
+
+        }
+
+      </section>
+
+
+      <!-- RESUMEN FINAL -->
+      <section class="final-summary">
+
+        <div>
+
+          <span class="section-label">
+            RESUMEN
+          </span>
+
+          <h2>Distribución contable</h2>
+
+          <p>
+            La factura se encuentra
+            @if (factura.distribucion.pendiente === 0) {
+              completamente distribuida.
+            } @else {
+              pendiente de distribución.
+            }
+          </p>
+
+        </div>
+
+
+        <div class="final-total">
+
+          <span>Total causado</span>
+
+          <strong>
+            ${{ factura.distribucion.total_distribuido | number:'1.2-2' }}
+          </strong>
+
+        </div>
+
+      </section>
+
+    }
+
+  </main>
+
+</div>

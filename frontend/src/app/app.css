@@ -1,0 +1,774 @@
+/* =========================================================
+   CAUSACIÓN DE FACTURAS - DRIM DUIT
+   ========================================================= */
+
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+/* ---------- VARIABLES ---------- */
+
+:root {
+  --drim-green: #4bd86b;
+  --drim-green-dark: #32bd55;
+  --drim-blue: #075462;
+  --drim-blue-dark: #043d48;
+
+  --background: #f5f7f8;
+  --surface: #ffffff;
+  --border: #e2e7e9;
+
+  --text: #173238;
+  --text-secondary: #65777c;
+  --text-light: #87969a;
+
+  --success-bg: #eaf9ee;
+  --success-text: #218a3c;
+
+  --warning-bg: #fff6df;
+  --warning-text: #9a6a00;
+
+  --shadow: 0 2px 12px rgba(4, 61, 72, 0.07);
+  --radius: 12px;
+}
+
+/* ---------- GENERAL ---------- */
+
+* {
+  box-sizing: border-box;
+}
+
+.app-container {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text);
+  font-family:
+    Inter,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+  height: 76px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 42px;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  box-shadow: 0 2px 8px rgba(4, 61, 72, 0.04);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.logo {
+  width: 155px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.header-title {
+  border-left: 1px solid var(--border);
+  padding-left: 22px;
+}
+
+.header-title h1 {
+  margin: 0;
+
+  font-size: 21px;
+  font-weight: 700;
+
+  color: var(--drim-blue);
+}
+
+.header-title span {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.main-content {
+  width: min(1450px, calc(100% - 64px));
+
+  margin: 0 auto;
+
+  padding: 38px 0 60px;
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading {
+  min-height: 400px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  color: var(--text-secondary);
+}
+
+.spinner {
+  width: 38px;
+  height: 38px;
+
+  border: 4px solid #dce5e7;
+  border-top-color: var(--drim-green);
+
+  border-radius: 50%;
+
+  animation: spin 0.8s linear infinite;
+
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.error-card {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 20px 24px;
+
+  background: #fff1f1;
+  border: 1px solid #f0caca;
+
+  border-radius: var(--radius);
+
+  color: #8b2d2d;
+
+  margin-bottom: 30px;
+}
+
+.error-icon {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e65a5a;
+  color: white;
+
+  font-weight: 700;
+}
+
+.error-card h3 {
+  margin: 0 0 4px;
+}
+
+.error-card p {
+  margin: 0;
+}
+
+/* =========================================================
+   LABELS GENERALES
+   ========================================================= */
+
+.section-label {
+  display: block;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.4px;
+
+  color: var(--drim-green-dark);
+
+  margin-bottom: 6px;
+}
+
+.label {
+  display: block;
+
+  font-size: 12px;
+
+  color: var(--text-light);
+
+  margin-bottom: 5px;
+}
+
+/* =========================================================
+   FACTURA HEADER
+   ========================================================= */
+
+.invoice-header {
+  background: var(--surface);
+
+  border-radius: var(--radius);
+
+  border: 1px solid var(--border);
+
+  box-shadow: var(--shadow);
+
+  padding: 28px 32px;
+
+  margin-bottom: 30px;
+}
+
+.invoice-title {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 24px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.invoice-title h2 {
+  margin: 0;
+
+  font-size: 27px;
+
+  color: var(--drim-blue);
+}
+
+.status {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 7px 14px;
+
+  border-radius: 20px;
+
+  background: var(--success-bg);
+
+  color: var(--success-text);
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.invoice-info {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 25px;
+
+  padding-top: 24px;
+}
+
+.info-item strong {
+  font-size: 16px;
+  color: var(--text);
+}
+
+.info-item.total strong {
+  color: var(--drim-blue);
+  font-size: 19px;
+}
+
+/* =========================================================
+   DISTRIBUTION SUMMARY
+   ========================================================= */
+
+.distribution-summary {
+  margin-bottom: 34px;
+}
+
+.summary-title {
+  margin-bottom: 16px;
+}
+
+.summary-title h2,
+.section-header h2,
+.final-summary h2 {
+  margin: 0;
+
+  font-size: 21px;
+
+  color: var(--drim-blue);
+}
+
+.summary-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 18px;
+}
+
+.summary-card {
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius);
+
+  padding: 22px 24px;
+
+  box-shadow: var(--shadow);
+}
+
+.summary-card span {
+  display: block;
+
+  color: var(--text-secondary);
+
+  font-size: 13px;
+
+  margin-bottom: 9px;
+}
+
+.summary-card strong {
+  font-size: 23px;
+
+  color: var(--drim-blue);
+}
+
+.summary-card.pending {
+  border-color: #f0d58b;
+  background: var(--warning-bg);
+}
+
+.summary-card.complete {
+  border-color: #bce8c8;
+  background: var(--success-bg);
+}
+
+.summary-card small {
+  display: block;
+
+  margin-top: 8px;
+
+  color: var(--success-text);
+
+  font-weight: 600;
+}
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.section-header {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: end;
+
+  margin-bottom: 16px;
+}
+
+.item-count {
+  background: #eaf0f2;
+
+  color: var(--drim-blue);
+
+  padding: 7px 13px;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   ITEMS
+   ========================================================= */
+
+.items-section {
+  margin-bottom: 38px;
+}
+
+.table-container {
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius);
+
+  overflow-x: auto;
+
+  box-shadow: var(--shadow);
+}
+
+table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  min-width: 1100px;
+}
+
+thead {
+  background: var(--drim-blue);
+}
+
+th {
+  padding: 15px 14px;
+
+  text-align: left;
+
+  color: white;
+
+  font-size: 11px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+
+  font-weight: 700;
+}
+
+td {
+  padding: 17px 14px;
+
+  border-bottom: 1px solid var(--border);
+
+  font-size: 13px;
+
+  color: var(--text);
+}
+
+tbody tr {
+  transition: background 0.15s ease;
+}
+
+tbody tr:hover {
+  background: #f4faf6;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.number {
+  font-weight: 700;
+
+  color: var(--drim-blue);
+}
+
+.description {
+  min-width: 260px;
+
+  font-weight: 600;
+}
+
+.total-cell {
+  font-weight: 800;
+
+  color: var(--drim-blue);
+}
+
+.account {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.account strong {
+  color: var(--drim-blue);
+
+  font-size: 13px;
+}
+
+.account span {
+  color: var(--text-secondary);
+
+  font-size: 12px;
+
+  line-height: 1.3;
+}
+
+.not-assigned {
+  display: inline-block;
+
+  padding: 5px 9px;
+
+  border-radius: 5px;
+
+  background: #fff3d7;
+
+  color: var(--warning-text);
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+/* =========================================================
+   CENTROS DE COSTO
+   ========================================================= */
+
+.cost-centers-section {
+  margin-bottom: 38px;
+}
+
+.cost-center-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.cost-center-card {
+  display: grid;
+
+  grid-template-columns: 130px 1fr 200px;
+
+  align-items: center;
+
+  gap: 25px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius);
+
+  padding: 18px 22px;
+
+  box-shadow: var(--shadow);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.cost-center-card:hover {
+  transform: translateY(-1px);
+
+  box-shadow: 0 5px 18px rgba(4, 61, 72, 0.1);
+}
+
+.cost-center-item strong {
+  display: block;
+
+  color: var(--drim-blue);
+
+  font-size: 14px;
+}
+
+.cost-center-item > span:not(.label) {
+  color: var(--text-secondary);
+
+  font-size: 12px;
+}
+
+.cost-center-value {
+  text-align: right;
+}
+
+.cost-center-value strong {
+  color: var(--drim-blue);
+
+  font-size: 17px;
+}
+
+.empty-state {
+  padding: 35px;
+
+  text-align: center;
+
+  background: var(--surface);
+
+  border: 1px dashed var(--border);
+
+  border-radius: var(--radius);
+
+  color: var(--text-secondary);
+}
+
+/* =========================================================
+   RESUMEN FINAL
+   ========================================================= */
+
+.final-summary {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  padding: 28px 32px;
+
+  background: var(--drim-blue);
+
+  color: white;
+
+  border-radius: var(--radius);
+
+  box-shadow: 0 8px 24px rgba(4, 61, 72, 0.15);
+}
+
+.final-summary .section-label {
+  color: var(--drim-green);
+}
+
+.final-summary h2 {
+  color: white;
+
+  margin-bottom: 7px;
+}
+
+.final-summary p {
+  margin: 0;
+
+  color: #c8d9dc;
+
+  font-size: 14px;
+}
+
+.final-total {
+  text-align: right;
+
+  min-width: 220px;
+}
+
+.final-total span {
+  display: block;
+
+  color: #c8d9dc;
+
+  font-size: 13px;
+
+  margin-bottom: 5px;
+}
+
+.final-total strong {
+  color: var(--drim-green);
+
+  font-size: 28px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .header {
+    padding: 0 20px;
+  }
+
+  .main-content {
+    width: calc(100% - 30px);
+
+    padding-top: 25px;
+  }
+
+  .logo {
+    width: 125px;
+  }
+
+  .header-title h1 {
+    font-size: 17px;
+  }
+
+  .invoice-info {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cost-center-card {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .cost-center-value {
+    text-align: left;
+  }
+
+  .final-summary {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .final-total {
+    text-align: left;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    height: auto;
+
+    padding: 15px;
+  }
+
+  .header-left {
+    gap: 12px;
+  }
+
+  .header-title {
+    padding-left: 12px;
+  }
+
+  .header-title span {
+    display: none;
+  }
+
+  .logo {
+    width: 110px;
+  }
+
+  .invoice-title {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 15px;
+  }
+
+  .invoice-info {
+    grid-template-columns: 1fr;
+  }
+
+  .invoice-header {
+    padding: 22px;
+  }
+}

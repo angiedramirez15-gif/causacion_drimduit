@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const pool = require('./db');
 
-async function buscarCuentas(texto) {
+async function buscarCentros(texto) {
     let conexion;
 
     try {
@@ -13,13 +13,14 @@ async function buscarCuentas(texto) {
                 id,
                 codigo,
                 nombre,
-                tipo,
-                naturaleza
-            FROM cuentas_contables
+                descripcion,
+                centro_padre_id
+            FROM centros_costos
             WHERE estado = 1
               AND (
                     codigo LIKE ?
                     OR nombre LIKE ?
+                    OR descripcion LIKE ?
               )
             ORDER BY codigo
             LIMIT 20
@@ -27,13 +28,14 @@ async function buscarCuentas(texto) {
 
         const busqueda = `%${texto}%`;
 
-        const cuentas = await conexion.query(sql, [
+        const centros = await conexion.query(sql, [
+            busqueda,
             busqueda,
             busqueda
         ]);
 
-        console.log(`CUENTAS PARA: "${texto}"`);
-        console.table(cuentas);
+        console.log(`CENTROS PARA: "${texto}"`);
+        console.table(centros);
 
     } catch (error) {
         console.error('Error:', error.message);
@@ -51,8 +53,8 @@ const texto = process.argv[2];
 
 if (!texto) {
     console.log('Debes indicar qué quieres buscar.');
-    console.log('Ejemplo: node buscar-cuentas.js mantenimiento');
+    console.log('Ejemplo: node buscar-centros.js Yerbabuena');
     process.exit(1);
 }
 
-buscarCuentas(texto);
+buscarCentros(texto);
